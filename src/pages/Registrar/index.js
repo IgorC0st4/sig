@@ -10,7 +10,7 @@ import styles from './styles';
 function Registrar({ navigation }) {
   const efetuarRegistro = () => {
     navigation.dispatch(
-      StackActions.replace('Home'),
+      StackActions.replace('Tabs'),
     );
   };
   const irParaTelaDeLogin = () => {

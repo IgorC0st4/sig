@@ -1,7 +1,7 @@
 import React from 'react';
 import { List } from 'react-native-paper';
 
-function CardServico() {
+function ItemAccordion({ item }) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handlePress = () => setExpanded(!expanded);
@@ -10,15 +10,16 @@ function CardServico() {
     <List.Section>
 
       <List.Accordion
-        title={`Serviços ${new Date().toLocaleDateString()}`}
+        title={item.placa}
         expanded={expanded}
         onPress={handlePress}
       >
-        <List.Item title="First item" />
-        <List.Item title="Second item" />
+        <List.Item title={`Modelo: ${item.modelo}`} />
+        <List.Item title={`Tamanho: ${item.tamanho}`} />
+        <List.Item title={`Cor: ${item.cor}`} />
       </List.Accordion>
     </List.Section>
   );
 }
 
-export default CardServico;
+export default ItemAccordion;

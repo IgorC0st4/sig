@@ -10,7 +10,7 @@ import styles from './styles';
 function Login({ navigation }) {
   const efetuarLogin = () => {
     navigation.dispatch(
-      StackActions.replace('Home'),
+      StackActions.replace('Tabs'),
     );
   };
 

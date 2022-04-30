@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {
   FAB,
+  List,
   Surface,
 } from 'react-native-paper';
 import {
@@ -8,10 +10,9 @@ import {
 } from 'react-native';
 import Page from '../../components/Page';
 import styles from './styles';
-import CardServico from '../../components/CardServico';
 
 function Home({ navigation }) {
-  const servicos = Array(15);
+  const [agendamentos, setAgendamentos] = React.useState(new Array(5));
 
   const irParaTelaDeAgendamento = () => {
     navigation.navigate('Agendamento');
@@ -23,8 +24,8 @@ function Home({ navigation }) {
         <FlatList
           style={styles.fullWidth}
           keyExtractor={(item, index) => index.toString()}
-          data={servicos}
-          renderItem={({ item }) => <CardServico item={item} />}
+          data={agendamentos}
+          renderItem={() => <List.Item title={new Date().toDateString()} />}
         />
       </Surface>
       <FAB
