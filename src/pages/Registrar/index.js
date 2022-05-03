@@ -4,51 +4,125 @@ import {
   Headline, Subheading, Surface, TextInput,
 } from 'react-native-paper';
 import { StackActions } from '@react-navigation/native';
+import { useForm, Controller } from 'react-hook-form';
 import Page from '../../components/Page';
 import styles from './styles';
+import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
 function Registrar({ navigation }) {
-  const efetuarRegistro = () => {
-    navigation.dispatch(
-      StackActions.replace('Tabs'),
-    );
-  };
+  const {
+    control, handleSubmit, formState: { errors }, setError,
+  } = useForm();
+
   const irParaTelaDeLogin = () => {
+    console.log('irParaTelaDeLogin');
     navigation.dispatch(
       StackActions.replace('Login'),
     );
   };
+
+  const efetuarRegistro = async (valores) => {
+    if (valores.senha !== valores.confirmarSenha) {
+      setError('confirmarSenha');
+      return;
+    }
+    try {
+      const { data } = await gerenciadorDeRequisicoes.post('/usuarios/registrar', valores);
+      console.log(data);
+    } catch (error) {
+      console.error(JSON.stringify(error));
+    }
+  };
+
   return (
     <Page>
       <Surface style={styles.centerAlign}>
         <Headline>Bem-vindo!</Headline>
         <Subheading>Preencha os dados abaixo para registrar-se</Subheading>
 
-        <TextInput
-          style={styles.fullWidth}
-          label="Email"
-          keyboardType="email-address"
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+            pattern: /[@]+/g,
+          }}
+          name="email"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.fullWidth}
+              label="Email"
+              keyboardType="email-address"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={errors.email}
+            />
+          )}
         />
 
-        <TextInput
-          style={styles.fullWidth}
-          label="Telefone"
-          keyboardType="phone-pad"
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+            minLength: 11,
+            maxLength: 14,
+          }}
+          name="telefone"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.fullWidth}
+              label="Telefone"
+              keyboardType="phone-pad"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={errors.telefone}
+            />
+          )}
         />
 
-        <TextInput
-          style={styles.fullWidth}
-          label="Senha"
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="senha"
+          render={({ field: { onChange, onBlur, value } }) => (
+
+            <TextInput
+              style={styles.fullWidth}
+              label="Senha"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={errors.senha}
+            />
+          )}
         />
-        <TextInput
-          style={styles.fullWidth}
-          label="Confirmar Senha"
+
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="confirmarSenha"
+          render={({ field: { onChange, onBlur, value } }) => (
+
+            <TextInput
+              style={styles.fullWidth}
+              label="Confirmar Senha"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={errors.confirmarSenha}
+            />
+          )}
         />
 
         <Button
           mode="contained"
           style={styles.fullWidth}
-          onPress={() => efetuarRegistro()}
+          onPress={handleSubmit(efetuarRegistro)}
         >
           Registrar-se
         </Button>

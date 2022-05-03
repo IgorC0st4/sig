@@ -16,10 +16,8 @@ function Carros() {
   const [dialogVisivel, setDialogVisivel] = React.useState(false);
   const [carros, setCarros] = React.useState([]);
 
-  const atualizarLista = () => {
-    setCarros((antigo) => [...antigo, {
-      placa: 'placa', cor: 'cor', tamanho: 'tamaho', modelo: 'modelo',
-    }]);
+  const atualizarLista = (novoCarro) => {
+    setCarros((antigo) => [...antigo, novoCarro]);
   };
 
   const mostrarDialog = () => setDialogVisivel(true);
@@ -42,8 +40,8 @@ function Carros() {
       />
       <Portal>
         <RegistrarCarroDialog
-          hideDialog={esconderDialog}
-          visible={dialogVisivel}
+          esconderDialog={esconderDialog}
+          visivel={dialogVisivel}
           atualizarLista={atualizarLista}
         />
       </Portal>
