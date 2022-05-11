@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
@@ -17,7 +18,7 @@ const Tab = createMaterialBottomTabNavigator();
 function HomeTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" options={{ title: 'Histórico', tabBarIcon: 'calendar-clock' }} component={Home} />
+      <Tab.Screen name="Historico" options={{ title: 'Histórico', tabBarIcon: 'calendar-clock' }} component={Home} />
       <Tab.Screen name="Carros" options={{ tabBarIcon: 'car' }} component={Carros} />
       <Tab.Screen name="Perfil" options={{ tabBarIcon: 'account' }} component={Perfil} />
     </Tab.Navigator>
@@ -30,7 +31,7 @@ function Routes() {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Registrar" component={Registrar} />
-        <Stack.Screen name="Tabs" options={{ headerShown: false }} component={HomeTabs} />
+        <Stack.Screen name="Tabs" component={HomeTabs} />
         <Stack.Screen name="Agendamento" component={Agendamento} />
       </Stack.Navigator>
     </NavigationContainer>

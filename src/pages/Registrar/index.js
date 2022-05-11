@@ -1,4 +1,5 @@
 import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Button,
   Headline, Subheading, Surface, TextInput,
@@ -15,7 +16,6 @@ function Registrar({ navigation }) {
   } = useForm();
 
   const irParaTelaDeLogin = () => {
-    console.log('irParaTelaDeLogin');
     navigation.dispatch(
       StackActions.replace('Login'),
     );
@@ -29,6 +29,10 @@ function Registrar({ navigation }) {
     try {
       const { data } = await gerenciadorDeRequisicoes.post('/usuarios/registrar', valores);
       console.log(data);
+      await AsyncStorage.setItem('idUsuario', `${data.id}`);
+      navigation.dispatch(
+        StackActions.replace('Tabs'),
+      );
     } catch (error) {
       console.error(JSON.stringify(error));
     }

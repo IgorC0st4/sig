@@ -1,4 +1,5 @@
 import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   FAB,
   Portal,
@@ -11,14 +12,34 @@ import Page from '../../components/Page';
 import styles from './styles';
 import CarroItem from '../../components/CarroItem';
 import RegistrarCarroDialog from '../../components/RegistrarCarroDialog';
+import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
 function Carros() {
+  const idUsuario = React.useRef(null);
   const [dialogVisivel, setDialogVisivel] = React.useState(false);
   const [carros, setCarros] = React.useState([]);
 
-  const atualizarLista = (novoCarro) => {
-    setCarros((antigo) => [...antigo, novoCarro]);
+  const buscarCarros = async () => {
+    try {
+      if (!idUsuario.current) {
+        idUsuario.current = await AsyncStorage.getItem('idUsuario');
+      }
+      console.log({
+        idUsuario,
+        current: idUsuario.current,
+      });
+      const params = {
+        idDono: idUsuario.current,
+      };
+      const { data } = await gerenciadorDeRequisicoes.get('/carros', { params });
+      setCarros(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
+  React.useEffect(() => {
+    buscarCarros();
+  }, []);
 
   const mostrarDialog = () => setDialogVisivel(true);
   const esconderDialog = () => setDialogVisivel(false);
@@ -26,9 +47,10 @@ function Carros() {
   return (
     <Page>
       <Surface style={styles.centerAlign}>
+
         <FlatList
           style={styles.fullWidth}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item.id.toString()}
           data={carros}
           renderItem={({ item }) => <CarroItem item={item} />}
         />
@@ -42,7 +64,8 @@ function Carros() {
         <RegistrarCarroDialog
           esconderDialog={esconderDialog}
           visivel={dialogVisivel}
-          atualizarLista={atualizarLista}
+          atualizarLista={buscarCarros}
+          idUsuario={idUsuario.current}
         />
       </Portal>
     </Page>

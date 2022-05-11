@@ -1,17 +1,50 @@
 import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Button,
   Headline, Subheading, Surface, TextInput,
 } from 'react-native-paper';
 import { StackActions } from '@react-navigation/native';
+import { useForm, Controller } from 'react-hook-form';
 import Page from '../../components/Page';
 import styles from './styles';
+import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
 function Login({ navigation }) {
-  const efetuarLogin = () => {
+  const {
+    control, handleSubmit, formState: { errors },
+  } = useForm();
+  const irParaHistorico = () => {
     navigation.dispatch(
       StackActions.replace('Tabs'),
     );
+  };
+
+  const verificarUsuarioJaLogado = async () => {
+    try {
+      const idUsuario = await AsyncStorage.getItem('idUsuario');
+      if (idUsuario != null) {
+        irParaHistorico();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  React.useEffect(() => {
+    verificarUsuarioJaLogado();
+  }, []);
+
+  const efetuarLogin = async (valores) => {
+    try {
+      const { data } = await gerenciadorDeRequisicoes.post('/usuarios/entrar', valores);
+      console.log(data);
+      await AsyncStorage.setItem('idUsuario', `${data.id}`);
+      navigation.dispatch(
+        StackActions.replace('Tabs'),
+      );
+    } catch (error) {
+      console.error(JSON.stringify(error));
+    }
   };
 
   const irParaTelaDeRegistro = () => {
@@ -25,23 +58,49 @@ function Login({ navigation }) {
         <Headline>Bem-vindo!</Headline>
         <Subheading>Preencha os dados abaixo para fazer login</Subheading>
 
-        <TextInput
-          style={styles.fullWidth}
-          label="Email"
-          type="email"
-          keyboardType="email-address"
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+            pattern: /[@]+/g,
+          }}
+          name="email"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.fullWidth}
+              label="Email"
+              keyboardType="email-address"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={errors.email}
+            />
+          )}
         />
 
-        <TextInput
-          style={styles.fullWidth}
-          label="Senha"
-          type="password"
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="senha"
+          render={({ field: { onChange, onBlur, value } }) => (
+
+            <TextInput
+              style={styles.fullWidth}
+              label="Senha"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={errors.senha}
+            />
+          )}
         />
 
         <Button
           mode="contained"
           style={styles.fullWidth}
-          onPress={() => efetuarLogin()}
+          onPress={handleSubmit(efetuarLogin)}
         >
           Entrar
         </Button>

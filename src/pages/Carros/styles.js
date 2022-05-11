@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
   },
   fullWidth: {
     width: '100%',
-    padding: 5,
   },
   fab: {
     position: 'absolute',

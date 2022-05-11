@@ -1,19 +1,28 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {
   Button, Dialog, TextInput,
 } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import styles from './styles';
+import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
-function RegistrarCarroDialog({ visivel, esconderDialog, atualizarLista }) {
+function RegistrarCarroDialog({
+  visivel, esconderDialog, atualizarLista, idUsuario,
+}) {
   const { control, handleSubmit, formState: { errors } } = useForm({
     mode: 'onBlur',
   });
 
-  const registrarCarro = (valores) => {
-    console.log(valores);
-    esconderDialog();
-    atualizarLista(valores);
+  const registrarCarro = async (valores) => {
+    try {
+      console.log({ valores, idUsuario });
+      await gerenciadorDeRequisicoes.post('/carros', Object.assign(valores, { idDono: idUsuario }));
+      atualizarLista();
+      esconderDialog();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -55,7 +64,7 @@ function RegistrarCarroDialog({ visivel, esconderDialog, atualizarLista }) {
           }) => (
             <TextInput
               style={styles.input}
-              error={errors.placa}
+              error={errors.modelo}
               label="Modelo"
               onChangeText={onChange}
               onBlur={onBlur}
