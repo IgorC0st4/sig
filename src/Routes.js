@@ -1,9 +1,10 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { DefaultTheme } from 'react-native-paper';
 
+import AppBar from './components/AppBar';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Agendamento from './pages/Agendamento';
@@ -27,11 +28,16 @@ function HomeTabs() {
 
 function Routes() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+    <NavigationContainer theme={{ ...DefaultTheme }}>
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{
+          header: (props) => <AppBar {...props} />,
+        }}
+      >
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Registrar" component={Registrar} />
-        <Stack.Screen name="Tabs" component={HomeTabs} />
+        <Stack.Screen name="Tabs" options={{ headerShown: false }} component={HomeTabs} />
         <Stack.Screen name="Agendamento" component={Agendamento} />
       </Stack.Navigator>
     </NavigationContainer>

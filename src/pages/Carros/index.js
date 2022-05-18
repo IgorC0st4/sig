@@ -14,7 +14,7 @@ import CarroItem from '../../components/CarroItem';
 import RegistrarCarroDialog from '../../components/RegistrarCarroDialog';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
-function Carros() {
+function Carros({ navigation }) {
   const idUsuario = React.useRef(null);
   const [dialogVisivel, setDialogVisivel] = React.useState(false);
   const [carros, setCarros] = React.useState([]);
@@ -45,7 +45,7 @@ function Carros() {
   const esconderDialog = () => setDialogVisivel(false);
 
   return (
-    <Page>
+    <Page back={false} navigation={navigation} title="Carros" customAppBar>
       <Surface style={styles.centerAlign}>
 
         <FlatList

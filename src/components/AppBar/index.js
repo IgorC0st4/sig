@@ -1,10 +1,13 @@
 import React from 'react';
 import { Appbar } from 'react-native-paper';
 
-function AppBar() {
+function AppBar({
+  navigation, back = false, route, title = '',
+}) {
   return (
     <Appbar.Header>
-      <Appbar.Content title="Título" />
+      {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
+      <Appbar.Content title={route ? route.name : title} />
     </Appbar.Header>
   );
 }

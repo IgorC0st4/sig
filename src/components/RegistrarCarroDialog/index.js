@@ -1,9 +1,9 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import {
-  Button, Dialog, TextInput,
+  Button, Dialog, TextInput, RadioButton, Text, Headline,
 } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
+import { View } from 'react-native';
 import styles from './styles';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
@@ -92,22 +92,28 @@ function RegistrarCarroDialog({
         />
         <Controller
           control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              style={styles.input}
-              error={errors.tamanho}
-              label="Tamanho"
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value}
-            />
-          )}
+          rules={{ required: true }}
           name="tamanho"
+          render={({ field: { onChange, value } }) => (
+            <View>
+              <Headline>Tamanho</Headline>
+              <RadioButton.Group onValueChange={onChange} value={value}>
+                <View>
+                  <Text>PEQUENO</Text>
+                  <RadioButton value="PEQUENO" />
+                </View>
+                <View>
+                  <Text>MÉDIO</Text>
+                  <RadioButton value="MÉDIO" />
+                </View>
+                <View>
+                  <Text>GRANDE</Text>
+                  <RadioButton value="GRANDE" />
+                </View>
+              </RadioButton.Group>
+            </View>
+          )}
         />
-
       </Dialog.Content>
       <Dialog.Actions>
         <Button onPress={() => esconderDialog()}>Cancelar</Button>

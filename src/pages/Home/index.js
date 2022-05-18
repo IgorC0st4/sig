@@ -19,7 +19,7 @@ function Home({ navigation }) {
   };
 
   return (
-    <Page>
+    <Page back={false} navigation={navigation} title="Histórico" customAppBar>
       <Surface style={styles.centerAlign}>
         <FlatList
           style={styles.fullWidth}
