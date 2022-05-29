@@ -1,9 +1,9 @@
 import React from 'react';
-import { Provider, DefaultTheme } from 'react-native-paper';
+import { Provider, DarkTheme } from 'react-native-paper';
 import Routes from './Routes';
 
 const theme = {
-  ...DefaultTheme,
+  ...DarkTheme,
 };
 
 function App() {

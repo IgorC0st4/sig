@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { DefaultTheme } from 'react-native-paper';
+import { DarkTheme } from 'react-native-paper';
 
 import AppBar from './components/AppBar';
 import Login from './pages/Login';
@@ -28,7 +28,7 @@ function HomeTabs() {
 
 function Routes() {
   return (
-    <NavigationContainer theme={{ ...DefaultTheme }}>
+    <NavigationContainer theme={{ ...DarkTheme }}>
       <Stack.Navigator
         initialRouteName="Login"
         screenOptions={{

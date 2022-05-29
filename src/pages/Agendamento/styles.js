@@ -2,16 +2,11 @@ import { StyleSheet } from 'react-native';
 import { Colors } from 'react-native-paper';
 
 const styles = StyleSheet.create({
-  centerAlign: {
-    alignContent: 'center',
-    alignItems: 'center',
+  fundo: {
     padding: 10,
-    height: '100%',
-    width: '100%',
   },
   fullWidth: {
     width: '100%',
-    padding: 5,
   },
   fab: {
     position: 'absolute',
