@@ -24,10 +24,6 @@ function Carros({ navigation }) {
       if (!idUsuario.current) {
         idUsuario.current = await AsyncStorage.getItem('idUsuario');
       }
-      console.log({
-        idUsuario,
-        current: idUsuario.current,
-      });
       const params = {
         idDono: idUsuario.current,
       };
