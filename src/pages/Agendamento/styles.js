@@ -4,6 +4,7 @@ import { Colors } from 'react-native-paper';
 const styles = StyleSheet.create({
   fundo: {
     padding: 10,
+    height: '100%',
   },
   fullWidth: {
     width: '100%',

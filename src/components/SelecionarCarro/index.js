@@ -2,7 +2,7 @@ import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, FlatList } from 'react-native';
 import {
-  Button, Caption, Colors, Headline, RadioButton, Text,
+  Button, Colors, Headline, RadioButton, Text, Title,
 } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
@@ -10,6 +10,7 @@ import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 function SelecionarCarro({ selecionarCarro }) {
   const idUsuario = React.useRef(null);
   const [carros, setCarros] = React.useState([]);
+  const [carregando, setCarregando] = React.useState(true);
   const { control, handleSubmit, formState: { errors } } = useForm({
     mode: 'onBlur',
   });
@@ -24,6 +25,7 @@ function SelecionarCarro({ selecionarCarro }) {
       };
       const { data } = await gerenciadorDeRequisicoes.get('/carros', { params });
       setCarros(data);
+      setCarregando(false);
     } catch (error) {
       console.error(error);
     }
@@ -33,45 +35,59 @@ function SelecionarCarro({ selecionarCarro }) {
     buscarCarros();
   }, []);
 
+  const selecionarCarroNaLista = (props) => {
+    console.log(props);
+    selecionarCarro(carros[props.index]);
+  };
+
+  if (carregando) {
+    return (
+      <View style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+        <Title>Carregando...</Title>
+      </View>
+    );
+  }
   return (
     <View style={{ height: '100%' }}>
+      {carregando}
       {
-            carros.length === 0
-              ? <Headline>Cadastre pelo menos um carro antes de fazer um agendamento</Headline>
-              : (
-                <View>
+              carros.length === 0
+                ? <Headline>Cadastre pelo menos um carro antes de fazer um agendamento</Headline>
+                : (
+                  <View>
 
-                  <Headline>Selecione o carro</Headline>
-                  <Controller
-                    control={control}
-                    rules={{ required: true }}
-                    name="carro"
-                    render={({ field: { onChange, value } }) => (
-                      <RadioButton.Group onValueChange={onChange} value={value}>
-                        <FlatList
-                          data={carros}
-                          keyExtractor={(item) => item.id.toString()}
-                          renderItem={
-                              ({ item }) => (
-                                <View>
-                                  <Text>{item.placa}</Text>
-                                  <RadioButton value={item} />
-                                </View>
-                              )
-                            }
-                        />
-                      </RadioButton.Group>
-                    )}
-                  />
-                  {
-                  errors.carro && (
-                  <Caption style={{ color: Colors.red300 }}>Selecione um carro</Caption>
-                  )
-                  }
-                  <Button type="submit" onPress={handleSubmit(selecionarCarro)}>Confirmar</Button>
-                </View>
-              )
-            }
+                    <Headline>Selecione o carro</Headline>
+                    <Controller
+                      control={control}
+                      rules={{ required: true }}
+                      name="index"
+                      render={({ field: { onChange, value } }) => (
+                        <RadioButton.Group onValueChange={onChange} value={value}>
+                          <FlatList
+                            data={carros}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={
+                                ({ item, index }) => (
+                                  <RadioButton.Item label={item.modelo} value={index} />
+                                )
+                              }
+                          />
+                          {/* <View>
+                                    <Text>{item.placa}</Text>
+                                    <RadioButton value={item} status={} />
+                                  </View> */}
+                        </RadioButton.Group>
+                      )}
+                    />
+                    {
+                    errors.index && (
+                    <Text style={{ color: Colors.red300 }}>Selecione um carro</Text>
+                    )
+                    }
+                    <Button type="submit" onPress={handleSubmit(selecionarCarroNaLista)}>Confirmar</Button>
+                  </View>
+                )
+              }
     </View>
   );
 }
