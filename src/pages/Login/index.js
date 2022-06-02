@@ -37,7 +37,6 @@ function Login({ navigation }) {
   const efetuarLogin = async (valores) => {
     try {
       const { data } = await gerenciadorDeRequisicoes.post('/usuarios/entrar', valores);
-      console.log(data);
       await AsyncStorage.setItem('idUsuario', `${data.id}`);
       navigation.dispatch(
         StackActions.replace('Tabs'),
@@ -88,6 +87,7 @@ function Login({ navigation }) {
 
             <TextInput
               style={styles.fullWidth}
+              secureTextEntry
               label="Senha"
               onChangeText={onChange}
               onBlur={onBlur}

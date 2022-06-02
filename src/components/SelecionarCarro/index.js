@@ -36,7 +36,6 @@ function SelecionarCarro({ selecionarCarro }) {
   }, []);
 
   const selecionarCarroNaLista = (props) => {
-    console.log(props);
     selecionarCarro(carros[props.index]);
   };
 

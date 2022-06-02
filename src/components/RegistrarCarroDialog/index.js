@@ -16,7 +16,6 @@ function RegistrarCarroDialog({
 
   const registrarCarro = async (valores) => {
     try {
-      console.log({ valores, idUsuario });
       await gerenciadorDeRequisicoes.post('/carros', Object.assign(valores, { idDono: idUsuario }));
       atualizarLista();
       esconderDialog();

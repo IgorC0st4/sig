@@ -28,7 +28,6 @@ function Registrar({ navigation }) {
     }
     try {
       const { data } = await gerenciadorDeRequisicoes.post('/usuarios/registrar', valores);
-      console.log(data);
       await AsyncStorage.setItem('idUsuario', `${data.id}`);
       navigation.dispatch(
         StackActions.replace('Tabs'),
@@ -43,7 +42,23 @@ function Registrar({ navigation }) {
       <Surface style={styles.centerAlign}>
         <Headline>Bem-vindo!</Headline>
         <Subheading>Preencha os dados abaixo para registrar-se</Subheading>
-
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          name="nome"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.fullWidth}
+              label="Nome"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={errors.nome}
+            />
+          )}
+        />
         <Controller
           control={control}
           rules={{
@@ -95,6 +110,7 @@ function Registrar({ navigation }) {
 
             <TextInput
               style={styles.fullWidth}
+              secureTextEntry
               label="Senha"
               onChangeText={onChange}
               onBlur={onBlur}
@@ -114,6 +130,7 @@ function Registrar({ navigation }) {
 
             <TextInput
               style={styles.fullWidth}
+              secureTextEntry
               label="Confirmar Senha"
               onChangeText={onChange}
               onBlur={onBlur}

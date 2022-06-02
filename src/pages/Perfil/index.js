@@ -5,7 +5,6 @@ import {
 } from 'react-native-paper';
 import { StackActions } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
-// import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 import Page from '../../components/Page';
 import styles from './styles';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
@@ -83,7 +82,21 @@ function Perfil({ navigation }) {
 
       <Surface style={styles.centerAlign}>
         <Headline>Atualize os seus dados</Headline>
-
+        <Controller
+          control={control}
+          name="nome"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.fullWidth}
+              label="Nome"
+              disabled
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={errors.nome}
+            />
+          )}
+        />
         <Controller
           control={control}
           rules={{
@@ -130,9 +143,9 @@ function Perfil({ navigation }) {
           control={control}
           name="senha"
           render={({ field: { onChange, onBlur, value } }) => (
-
             <TextInput
               style={styles.fullWidth}
+              secureTextEntry
               label="Senha"
               onChangeText={onChange}
               onBlur={onBlur}
@@ -146,9 +159,9 @@ function Perfil({ navigation }) {
           control={control}
           name="confirmarSenha"
           render={({ field: { onChange, onBlur, value } }) => (
-
             <TextInput
               style={styles.fullWidth}
+              secureTextEntry
               label="Confirmar Senha"
               onChangeText={onChange}
               onBlur={onBlur}

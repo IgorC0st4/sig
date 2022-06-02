@@ -46,6 +46,7 @@ function Agendamento({ navigation }) {
           carroSelecionado={carroSelecionado}
           dataSelecionada={dataSelecionada}
           servicosSelecionados={servicosSelecionados}
+          navigation={navigation}
         />
         )}
       </Surface>
