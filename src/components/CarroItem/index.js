@@ -4,7 +4,7 @@ import {
 } from 'react-native-paper';
 import styles from './styles';
 
-function ItemAccordion({ item }) {
+function CarroItem({ item, excluirCarro }) {
   return (
     <Card style={{ ...styles.fullWidth, ...styles.card }}>
       <Card.Title title={item.placa} />
@@ -14,11 +14,10 @@ function ItemAccordion({ item }) {
         <List.Item title={item.tamanho} description="Tamanho" />
       </Card.Content>
       <Card.Actions style={{ ...styles.fullWidth, ...styles.cardActions }}>
-        <Button icon="pencil">Editar</Button>
-        <Button icon="delete" color={DefaultTheme.colors.error}>Excluir</Button>
+        <Button icon="delete" color={DefaultTheme.colors.error} onPress={() => excluirCarro(item.id)}>Excluir</Button>
       </Card.Actions>
     </Card>
   );
 }
 
-export default ItemAccordion;
+export default CarroItem;

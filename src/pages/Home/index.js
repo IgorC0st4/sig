@@ -16,13 +16,11 @@ import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 function Home({ navigation }) {
   const [agendamentos, setAgendamentos] = React.useState([]);
   const [carregando, setCarregando] = React.useState(true);
-
-  const irParaTelaDeAgendamento = () => {
-    navigation.navigate('Agendamento');
-  };
+  const atualizarHome = React.useRef(false);
 
   const buscarAgendamentos = async () => {
     try {
+      setCarregando(true);
       const idUsuario = await AsyncStorage.getItem('idUsuario');
       const params = { idUsuario };
       const { data } = await gerenciadorDeRequisicoes.get('/agendamentos/usuario', { params });
@@ -31,6 +29,18 @@ function Home({ navigation }) {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const visualizarDetalhesAgendamento = (idAgendamento) => {
+    navigation.navigate('Detalhes', { idAgendamento });
+  };
+
+  React.useEffect(() => {
+    buscarAgendamentos();
+  }, [atualizarHome.current]);
+
+  const irParaTelaDeAgendamento = () => {
+    navigation.navigate('Agendamento', { atualizarHome: atualizarHome.current });
   };
 
   React.useEffect(() => {
@@ -59,7 +69,12 @@ function Home({ navigation }) {
                   style={styles.fullWidth}
                   keyExtractor={(item, index) => index.toString()}
                   data={agendamentos}
-                  renderItem={() => <List.Item title={new Date().toDateString()} />}
+                  renderItem={({ item }) => (
+                    <List.Item
+                      title={`${new Date(item.dataMarcada).toLocaleDateString()} - ${item.situacao}`}
+                      onPress={() => visualizarDetalhesAgendamento(item.id)}
+                    />
+                  )}
                 />
               )
           }

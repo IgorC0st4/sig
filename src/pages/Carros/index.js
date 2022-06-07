@@ -33,6 +33,16 @@ function Carros({ navigation }) {
       console.error(error);
     }
   };
+
+  const excluirCarro = async (id) => {
+    try {
+      await gerenciadorDeRequisicoes.delete(`/carros/${id}`);
+      buscarCarros();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   React.useEffect(() => {
     buscarCarros();
   }, []);
@@ -48,7 +58,7 @@ function Carros({ navigation }) {
           style={styles.fullWidth}
           keyExtractor={(item) => item.id.toString()}
           data={carros}
-          renderItem={({ item }) => <CarroItem item={item} />}
+          renderItem={({ item }) => <CarroItem item={item} excluirCarro={excluirCarro} />}
         />
       </Surface>
       <FAB

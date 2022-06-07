@@ -21,6 +21,7 @@
         "react/prop-types": "off",
         "react/jsx-props-no-spreading": "off",
         "react/no-unstable-nested-components": "off",
-        "no-useless-return": "off"
+        "no-useless-return": "off",
+        "no-param-reassign": "off"
     }
 }

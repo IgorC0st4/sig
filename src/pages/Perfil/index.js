@@ -63,8 +63,6 @@ function Perfil({ navigation }) {
       } catch (error) {
         console.error(JSON.stringify(error));
       }
-    } else {
-      console.log('erro');
     }
   };
   const sair = async () => {

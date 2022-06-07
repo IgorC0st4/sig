@@ -4,12 +4,13 @@ import {
   Button,
   Card, DarkTheme, Divider, List, Text, Title,
 } from 'react-native-paper';
-import { StackActions } from '@react-navigation/native';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
 function ResumoAgendamento({
   dataSelecionada, carroSelecionado, servicosSelecionados, navigation,
+  atualizarHome,
 }) {
+  atualizarHome = React.useRef(atualizarHome);
   const [orcamento, setOrcamento] = React.useState(0);
   const [horasServico, setHorasServico] = React.useState(0);
 
@@ -44,9 +45,8 @@ function ResumoAgendamento({
         horasServico,
       };
       await gerenciadorDeRequisicoes.post('agendamentos', postData);
-      navigation.dispatch(
-        StackActions.replace('Tabs'),
-      );
+      atualizarHome.current = true;
+      navigation.goBack();
     } catch (error) {
       console.error(error);
     }
