@@ -12,6 +12,7 @@ import Registrar from './pages/Registrar';
 import Perfil from './pages/Perfil';
 import Carros from './pages/Carros';
 import DetalhesAgendamento from './pages/DetalhesAgendamento';
+import AgendamentosGeral from './pages/AgendamentosGeral';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ function Routes() {
         <Stack.Screen name="Tabs" options={{ headerShown: false }} component={HomeTabs} />
         <Stack.Screen name="Agendamento" component={Agendamento} />
         <Stack.Screen name="Detalhes" component={DetalhesAgendamento} />
+        <Stack.Screen name="Agendamentos" component={AgendamentosGeral} />
       </Stack.Navigator>
     </NavigationContainer>
   );

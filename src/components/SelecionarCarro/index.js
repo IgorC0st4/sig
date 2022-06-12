@@ -71,10 +71,6 @@ function SelecionarCarro({ selecionarCarro }) {
                                 )
                               }
                           />
-                          {/* <View>
-                                    <Text>{item.placa}</Text>
-                                    <RadioButton value={item} status={} />
-                                  </View> */}
                         </RadioButton.Group>
                       )}
                     />
@@ -83,7 +79,7 @@ function SelecionarCarro({ selecionarCarro }) {
                     <Text style={{ color: Colors.red300 }}>Selecione um carro</Text>
                     )
                     }
-                    <Button type="submit" onPress={handleSubmit(selecionarCarroNaLista)}>Confirmar</Button>
+                    <Button type="submit" mode="contained" onPress={handleSubmit(selecionarCarroNaLista)}>Confirmar</Button>
                   </View>
                 )
               }

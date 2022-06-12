@@ -29,6 +29,7 @@ function Registrar({ navigation }) {
     try {
       const { data } = await gerenciadorDeRequisicoes.post('/usuarios/registrar', valores);
       await AsyncStorage.setItem('idUsuario', `${data.id}`);
+      await AsyncStorage.setItem('tipo', `${data.tipo}`);
       navigation.dispatch(
         StackActions.replace('Tabs'),
       );

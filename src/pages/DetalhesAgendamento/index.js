@@ -1,7 +1,9 @@
 import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, FlatList } from 'react-native';
 import {
-  Card, Divider, List, Text, Title,
+  Button,
+  Card, Colors, Divider, List, Text, Title,
 } from 'react-native-paper';
 import Page from '../../components/Page';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
@@ -9,18 +11,19 @@ import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 function DetalhesAgendamento({
   route,
 }) {
+  const [tipoUsuario, setTipoUsuario] = React.useState('CLIENTE');
   const [carregando, setCarregando] = React.useState(true);
   const [agendamento, setAgendamento] = React.useState({});
   const [carroSelecionado, setCarroSelecionado] = React.useState({});
   const [servicosSelecionados, setServicosSelecionados] = React.useState([]);
-  const [horasServico, setHorasServico] = React.useState(0);
 
-  const calcularHorasServico = () => {
-    let total = 0;
-    servicosSelecionados.forEach(({ duracao }) => {
-      total += duracao;
-    });
-    setHorasServico(total);
+  const buscarTipoUsuario = async () => {
+    try {
+      const tipo = await AsyncStorage.getItem('tipo');
+      setTipoUsuario(tipo);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const buscarDetalhes = async () => {
@@ -39,7 +42,19 @@ function DetalhesAgendamento({
   const prepararDadosDeExibicao = async () => {
     try {
       await buscarDetalhes();
-      calcularHorasServico();
+      await buscarTipoUsuario();
+      setCarregando(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const finalizarAgendamento = async () => {
+    try {
+      setCarregando(true);
+      const putData = { id: route.params.idAgendamento, situacao: 'FINALIZADO' };
+      await gerenciadorDeRequisicoes.put('/agendamentos', putData);
+      setAgendamento(Object.assign(agendamento, { situacao: 'FINALIZADO' }));
       setCarregando(false);
     } catch (error) {
       console.error(error);
@@ -88,7 +103,7 @@ function DetalhesAgendamento({
               )}
             />
             <List.Item title={`Total: R$${agendamento.orcamento}`} />
-            <List.Item title={`Expectativa de horas: ${horasServico}`} />
+            <List.Item title={`Expectativa de horas: ${agendamento.horasServico}`} />
             <Divider />
           </View>
           <View style={{ marginBottom: 15 }}>
@@ -96,6 +111,14 @@ function DetalhesAgendamento({
             <Text>{agendamento.situacao}</Text>
             <Divider />
           </View>
+          {
+            tipoUsuario === 'ADMIN' && (
+            <View style={{ marginBottom: 15 }}>
+              <Button mode="contained" color={Colors.green500} onPress={() => finalizarAgendamento()}>Finalizar Agendamento</Button>
+              <Divider />
+            </View>
+            )
+          }
         </Card.Content>
       </Card>
     </Page>

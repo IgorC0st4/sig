@@ -1,7 +1,5 @@
 import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  FAB,
   List,
   Surface,
   Title,
@@ -13,17 +11,14 @@ import Page from '../../components/Page';
 import styles from './styles';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
-function Home({ navigation }) {
-  const atualizarHome = React.useRef(false);
+function AgendamentosGeral({ navigation }) {
   const [agendamentos, setAgendamentos] = React.useState([]);
   const [carregando, setCarregando] = React.useState(true);
 
   const buscarAgendamentos = async () => {
     try {
       setCarregando(true);
-      const idUsuario = await AsyncStorage.getItem('idUsuario');
-      const params = { idUsuario };
-      const { data } = await gerenciadorDeRequisicoes.get('/agendamentos/usuario', { params });
+      const { data } = await gerenciadorDeRequisicoes.get('/agendamentos/admin');
       setAgendamentos(data);
       setCarregando(false);
     } catch (error) {
@@ -35,16 +30,9 @@ function Home({ navigation }) {
     navigation.navigate('Detalhes', { idAgendamento });
   };
 
-  const irParaTelaDeAgendamento = () => {
-    navigation.navigate('Agendamento', { atualizarHome: atualizarHome.current });
-  };
-
   React.useEffect(() => {
     buscarAgendamentos();
   }, []);
-  React.useEffect(() => {
-    buscarAgendamentos();
-  }, [atualizarHome.current]);
 
   if (carregando) {
     return (
@@ -54,7 +42,7 @@ function Home({ navigation }) {
     );
   }
   return (
-    <Page back={false} navigation={navigation} title="Histórico" customAppBar>
+    <Page>
       <Surface style={styles.centerAlign}>
         {
             agendamentos.length === 0
@@ -70,7 +58,7 @@ function Home({ navigation }) {
                   data={agendamentos}
                   renderItem={({ item }) => (
                     <List.Item
-                      title={`${new Date(item.dataMarcada).toLocaleDateString()} - ${item.situacao}`}
+                      title={`${new Date(item.dataMarcada).toLocaleDateString()} - ${item.situacao} - ${item.nomeCliente}`}
                       onPress={() => visualizarDetalhesAgendamento(item.id)}
                     />
                   )}
@@ -78,13 +66,8 @@ function Home({ navigation }) {
               )
           }
       </Surface>
-      <FAB
-        style={styles.fab}
-        icon="calendar"
-        onPress={() => irParaTelaDeAgendamento()}
-      />
     </Page>
   );
 }
 
-export default Home;
+export default AgendamentosGeral;

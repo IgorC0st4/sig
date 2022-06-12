@@ -14,10 +14,15 @@ function Login({ navigation }) {
   const {
     control, handleSubmit, formState: { errors },
   } = useForm();
-  const irParaHistorico = () => {
-    navigation.dispatch(
-      StackActions.replace('Tabs'),
-    );
+  const irParaHistorico = async () => {
+    try {
+      const tipoUsuario = await AsyncStorage.getItem('tipo');
+      navigation.dispatch(
+        StackActions.replace(tipoUsuario === 'CLIENTE' ? 'Tabs' : 'Agendamentos'),
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const verificarUsuarioJaLogado = async () => {
@@ -38,8 +43,9 @@ function Login({ navigation }) {
     try {
       const { data } = await gerenciadorDeRequisicoes.post('/usuarios/entrar', valores);
       await AsyncStorage.setItem('idUsuario', `${data.id}`);
+      await AsyncStorage.setItem('tipo', `${data.tipo}`);
       navigation.dispatch(
-        StackActions.replace('Tabs'),
+        StackActions.replace(data.tipo === 'CLIENTE' ? 'Tabs' : 'Agendamentos'),
       );
     } catch (error) {
       console.error(JSON.stringify(error));

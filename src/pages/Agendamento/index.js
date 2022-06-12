@@ -8,7 +8,7 @@ import SelecionarData from '../../components/SelecionarData';
 import SelecionarServicos from '../../components/SelecionarServicos';
 import ResumoAgendamento from '../../components/ResumoAgendamento';
 
-function Agendamento({ navigation, atualizarHome }) {
+function Agendamento({ navigation }) {
   const [etapaAtual, setEtapaAtual] = React.useState(0);
   const [dataSelecionada, setDataSelecionada] = React.useState(new Date());
   const [carroSelecionado, setCarroSelecionado] = React.useState({});
@@ -47,7 +47,6 @@ function Agendamento({ navigation, atualizarHome }) {
           dataSelecionada={dataSelecionada}
           servicosSelecionados={servicosSelecionados}
           navigation={navigation}
-          atualizarHome={atualizarHome}
         />
         )}
       </Surface>

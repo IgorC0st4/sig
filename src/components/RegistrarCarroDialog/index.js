@@ -116,7 +116,7 @@ function RegistrarCarroDialog({
       </Dialog.Content>
       <Dialog.Actions>
         <Button onPress={() => esconderDialog()}>Cancelar</Button>
-        <Button type="submit" onPress={handleSubmit(registrarCarro)}>Salvar</Button>
+        <Button mode="contained" type="submit" onPress={handleSubmit(registrarCarro)}>Salvar</Button>
       </Dialog.Actions>
     </Dialog>
   );
