@@ -30,7 +30,6 @@ function DetalhesAgendamento({
     try {
       const params = { idAgendamento: route.params.idAgendamento };
       const { data } = await gerenciadorDeRequisicoes.get('/agendamentos/usuario/detalhes', { params });
-      console.log(data);
       setAgendamento(data.agendamento);
       setCarroSelecionado(data.carroSelecionado);
       setServicosSelecionados(data.servicosSelecionados);
