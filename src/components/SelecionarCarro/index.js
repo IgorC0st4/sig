@@ -1,6 +1,6 @@
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Alert } from 'react-native';
 import {
   Button, Colors, Headline, RadioButton, Text, Title,
 } from 'react-native-paper';
@@ -27,7 +27,16 @@ function SelecionarCarro({ selecionarCarro }) {
       setCarros(data);
       setCarregando(false);
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao buscar os carros registrados. Verifique a sua conexão com a internet para tentar novamente.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 

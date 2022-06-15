@@ -6,6 +6,7 @@ import {
 } from 'react-native-paper';
 import { StackActions } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
+import { Alert } from 'react-native';
 import Page from '../../components/Page';
 import styles from './styles';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
@@ -34,7 +35,16 @@ function Registrar({ navigation }) {
         StackActions.replace('Tabs'),
       );
     } catch (error) {
-      console.error(JSON.stringify(error));
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao efetuar o registro. Verifique os dados inseridos e a sua conexão com a internet.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 

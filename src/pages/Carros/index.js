@@ -6,6 +6,7 @@ import {
   Surface,
 } from 'react-native-paper';
 import {
+  Alert,
   FlatList,
 } from 'react-native';
 import Page from '../../components/Page';
@@ -30,7 +31,16 @@ function Carros({ navigation }) {
       const { data } = await gerenciadorDeRequisicoes.get('/carros', { params });
       setCarros(data);
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao buscar os carros registrados. Verifique a sua conexão com a internet para tentar novamente.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 
@@ -39,7 +49,16 @@ function Carros({ navigation }) {
       await gerenciadorDeRequisicoes.delete(`/carros/${id}`);
       buscarCarros();
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao excluir o carro. Verifique a sua conexão com a internet para tentar novamente.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 

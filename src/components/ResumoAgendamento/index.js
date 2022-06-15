@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Alert } from 'react-native';
 import {
   Button,
   Card, DarkTheme, Divider, List, Text, Title,
@@ -45,7 +45,16 @@ function ResumoAgendamento({
       await gerenciadorDeRequisicoes.post('agendamentos', postData);
       navigation.goBack();
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao registrar o agendamento. Verifique os dados inseridos e a sua conexão com a internet para tentar novamente.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 

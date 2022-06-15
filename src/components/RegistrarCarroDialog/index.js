@@ -3,7 +3,7 @@ import {
   Button, Dialog, TextInput, RadioButton, Text, Headline,
 } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import styles from './styles';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
@@ -20,7 +20,16 @@ function RegistrarCarroDialog({
       atualizarLista();
       esconderDialog();
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao salvar o carro. Verifique os dados inseridos e a sua conexão com a internet para tentar novamente.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 

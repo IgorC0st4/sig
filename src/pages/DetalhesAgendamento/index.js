@@ -1,6 +1,6 @@
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Alert } from 'react-native';
 import {
   Button,
   Card, Colors, Divider, List, Text, Title,
@@ -22,7 +22,16 @@ function DetalhesAgendamento({
       const tipo = await AsyncStorage.getItem('tipo');
       setTipoUsuario(tipo);
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao buscar os seus dados. Tente abrir o aplicativo novamente ou limpar o cache.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 
@@ -34,7 +43,16 @@ function DetalhesAgendamento({
       setCarroSelecionado(data.carroSelecionado);
       setServicosSelecionados(data.servicosSelecionados);
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao buscar os detalhes. Verifique a sua conexão com a internet para tentar novamente.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 
@@ -44,7 +62,16 @@ function DetalhesAgendamento({
       await buscarTipoUsuario();
       setCarregando(false);
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao buscar os detalhes. Verifique a sua conexão com a internet para tentar novamente.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 
@@ -56,7 +83,16 @@ function DetalhesAgendamento({
       setAgendamento(Object.assign(agendamento, { situacao: 'FINALIZADO' }));
       setCarregando(false);
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao finalizar o agendamento. Verifique os dados inseridos e a sua conexão com a internet para tentar novamente.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 

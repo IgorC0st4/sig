@@ -7,6 +7,7 @@ import {
   Title,
 } from 'react-native-paper';
 import {
+  Alert,
   FlatList, View,
 } from 'react-native';
 import Page from '../../components/Page';
@@ -27,7 +28,16 @@ function Home({ navigation }) {
       setAgendamentos(data);
       setCarregando(false);
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao buscar os agendamentos. Verifique a sua conexão com a internet para tentar novamente.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 

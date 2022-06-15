@@ -6,6 +6,7 @@ import {
 } from 'react-native-paper';
 import { StackActions } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
+import { Alert } from 'react-native';
 import Page from '../../components/Page';
 import styles from './styles';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
@@ -21,7 +22,16 @@ function Login({ navigation }) {
         StackActions.replace(tipoUsuario === 'CLIENTE' ? 'Tabs' : 'Agendamentos'),
       );
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao buscar os seus dados. Abra o aplicativo novamente ou tente limpar o cache.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 
@@ -32,7 +42,16 @@ function Login({ navigation }) {
         irParaHistorico();
       }
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao buscar os seus dados. Abra o aplicativo novamente ou tente limpar o cache.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
   React.useEffect(() => {
@@ -48,7 +67,16 @@ function Login({ navigation }) {
         StackActions.replace(data.tipo === 'CLIENTE' ? 'Tabs' : 'Agendamentos'),
       );
     } catch (error) {
-      console.error(JSON.stringify(error));
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao efetuar o login. Verifique os dados inseridos e a conexão com a internet.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 

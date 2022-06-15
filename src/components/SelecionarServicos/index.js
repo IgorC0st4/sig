@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { Alert, FlatList, View } from 'react-native';
 import {
   Button, Switch, Title, Text, DarkTheme, Snackbar,
 } from 'react-native-paper';
@@ -23,7 +23,16 @@ function SelecionarServicos({ tamanho, selecionarServicos }) {
       setServicos(data);
       setCarregando(false);
     } catch (error) {
-      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao buscar os serviços. Verifique os dados a sua conexão com a internet para tentar novamente.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
     }
   };
 
