@@ -18,7 +18,7 @@ import RegistrarCarroDialog from '../../components/RegistrarCarroDialog';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
 function Carros({ navigation }) {
-  const idUsuario = React.useRef(null);
+  const [iddono, setIddono] = React.useState(0);
   const [carregando, setCarregando] = React.useState(true);
   const [dialogVisivel, setDialogVisivel] = React.useState(false);
   const [carros, setCarros] = React.useState([]);
@@ -26,13 +26,7 @@ function Carros({ navigation }) {
   const buscarCarros = async () => {
     try {
       setCarregando(true);
-      if (!idUsuario.current) {
-        idUsuario.current = await AsyncStorage.getItem('idUsuario');
-      }
-      const params = {
-        iddono: idUsuario.current,
-      };
-      const { data } = await gerenciadorDeRequisicoes.get('/carros', { params });
+      const { data } = await gerenciadorDeRequisicoes.get(`/carros/?iddono=${iddono}`);
       setCarros(data);
       setCarregando(false);
     } catch (error) {
@@ -40,6 +34,25 @@ function Carros({ navigation }) {
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao buscar os carros registrados. Verifique a sua conexão com a internet para tentar novamente.',
+        [
+          {
+            text: 'Fechar',
+            style: 'cancel',
+          },
+        ],
+      );
+    }
+  };
+
+  const buscarIdDono = async () => {
+    try {
+      const idSalvo = await AsyncStorage.getItem('idUsuario');
+      setIddono(idSalvo);
+    } catch (error) {
+      console.error(error);
+      Alert.alert(
+        'ERRO',
+        'Ocorreu um erro ao buscar os os seus dados. Feche o aplicativo e tente novamente.',
         [
           {
             text: 'Fechar',
@@ -70,7 +83,25 @@ function Carros({ navigation }) {
   };
 
   React.useEffect(() => {
-    buscarCarros();
+    const inicializarTela = async () => {
+      try {
+        await buscarIdDono();
+        await buscarCarros();
+      } catch (error) {
+        console.error(error);
+        Alert.alert(
+          'ERRO',
+          'Ocorreu um erro ao buscar os os seus dados. Feche o aplicativo e tente novamente.',
+          [
+            {
+              text: 'Fechar',
+              style: 'cancel',
+            },
+          ],
+        );
+      }
+    };
+    inicializarTela();
   }, []);
 
   const mostrarDialog = () => setDialogVisivel(true);
@@ -104,7 +135,7 @@ function Carros({ navigation }) {
           esconderDialog={esconderDialog}
           visivel={dialogVisivel}
           atualizarLista={buscarCarros}
-          idUsuario={idUsuario.current}
+          iddono={iddono}
         />
       </Portal>
     </Page>

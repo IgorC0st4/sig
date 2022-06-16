@@ -41,8 +41,7 @@ function DetalhesAgendamento({
 
   const buscarDetalhes = async () => {
     try {
-      const params = { idagendamento: route.params.idagendamento };
-      const { data } = await gerenciadorDeRequisicoes.get('/agendamentos/usuario/detalhes', { params });
+      const { data } = await gerenciadorDeRequisicoes.get(`/agendamentos/usuario/detalhes?idagendamento=${route.params.idagendamento}`);
       setAgendamento(data.agendamento);
       setCarroSelecionado(data.carroSelecionado);
       setServicosSelecionados(data.servicosSelecionados);

@@ -22,8 +22,7 @@ function Home({ navigation }) {
   const buscarAgendamentos = async () => {
     try {
       const idUsuario = await AsyncStorage.getItem('idUsuario');
-      const params = { idUsuario };
-      const { data } = await gerenciadorDeRequisicoes.get('/agendamentos/usuario', { params });
+      const { data } = await gerenciadorDeRequisicoes.get(`/agendamentos/usuario?idusuario=${idUsuario}`);
       setAgendamentos(data);
     } catch (error) {
       console.error(error);

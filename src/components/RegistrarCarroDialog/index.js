@@ -8,7 +8,7 @@ import styles from './styles';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
 function RegistrarCarroDialog({
-  visivel, esconderDialog, atualizarLista, idUsuario,
+  visivel, esconderDialog, atualizarLista, iddono,
 }) {
   const { control, handleSubmit, formState: { errors } } = useForm({
     mode: 'onBlur',
@@ -16,7 +16,7 @@ function RegistrarCarroDialog({
 
   const registrarCarro = async (valores) => {
     try {
-      await gerenciadorDeRequisicoes.post('/carros', Object.assign(valores, { iddono: idUsuario }));
+      await gerenciadorDeRequisicoes.post('/carros', { iddono, ...valores });
       atualizarLista();
       esconderDialog();
     } catch (error) {

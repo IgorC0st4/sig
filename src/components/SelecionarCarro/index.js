@@ -20,10 +20,7 @@ function SelecionarCarro({ selecionarCarro }) {
       if (!idUsuario.current) {
         idUsuario.current = await AsyncStorage.getItem('idUsuario');
       }
-      const params = {
-        iddono: idUsuario.current,
-      };
-      const { data } = await gerenciadorDeRequisicoes.get('/carros', { params });
+      const { data } = await gerenciadorDeRequisicoes.get(`/carros/?iddono=${idUsuario.current}`);
       setCarros(data);
       setCarregando(false);
     } catch (error) {
