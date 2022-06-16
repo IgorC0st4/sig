@@ -22,6 +22,7 @@ function Login({ navigation }) {
         StackActions.replace(tipoUsuario === 'CLIENTE' ? 'Tabs' : 'Agendamentos'),
       );
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao buscar os seus dados. Abra o aplicativo novamente ou tente limpar o cache.',
@@ -42,6 +43,7 @@ function Login({ navigation }) {
         irParaHistorico();
       }
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao buscar os seus dados. Abra o aplicativo novamente ou tente limpar o cache.',
@@ -67,6 +69,7 @@ function Login({ navigation }) {
         StackActions.replace(data.tipo === 'CLIENTE' ? 'Tabs' : 'Agendamentos'),
       );
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao efetuar o login. Verifique os dados inseridos e a conexão com a internet.',

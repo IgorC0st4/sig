@@ -4,10 +4,12 @@ import {
   FAB,
   Portal,
   Surface,
+  Title,
 } from 'react-native-paper';
 import {
   Alert,
   FlatList,
+  View,
 } from 'react-native';
 import Page from '../../components/Page';
 import styles from './styles';
@@ -17,20 +19,24 @@ import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
 function Carros({ navigation }) {
   const idUsuario = React.useRef(null);
+  const [carregando, setCarregando] = React.useState(true);
   const [dialogVisivel, setDialogVisivel] = React.useState(false);
   const [carros, setCarros] = React.useState([]);
 
   const buscarCarros = async () => {
     try {
+      setCarregando(true);
       if (!idUsuario.current) {
         idUsuario.current = await AsyncStorage.getItem('idUsuario');
       }
       const params = {
-        idDono: idUsuario.current,
+        iddono: idUsuario.current,
       };
       const { data } = await gerenciadorDeRequisicoes.get('/carros', { params });
       setCarros(data);
+      setCarregando(false);
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao buscar os carros registrados. Verifique a sua conexão com a internet para tentar novamente.',
@@ -49,6 +55,7 @@ function Carros({ navigation }) {
       await gerenciadorDeRequisicoes.delete(`/carros/${id}`);
       buscarCarros();
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao excluir o carro. Verifique a sua conexão com a internet para tentar novamente.',
@@ -69,6 +76,13 @@ function Carros({ navigation }) {
   const mostrarDialog = () => setDialogVisivel(true);
   const esconderDialog = () => setDialogVisivel(false);
 
+  if (carregando) {
+    return (
+      <View style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+        <Title>Carregando...</Title>
+      </View>
+    );
+  }
   return (
     <Page back={false} navigation={navigation} title="Carros" customAppBar>
       <Surface style={styles.centerAlign}>

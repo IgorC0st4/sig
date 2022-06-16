@@ -21,12 +21,13 @@ function SelecionarCarro({ selecionarCarro }) {
         idUsuario.current = await AsyncStorage.getItem('idUsuario');
       }
       const params = {
-        idDono: idUsuario.current,
+        iddono: idUsuario.current,
       };
       const { data } = await gerenciadorDeRequisicoes.get('/carros', { params });
       setCarros(data);
       setCarregando(false);
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao buscar os carros registrados. Verifique a sua conexão com a internet para tentar novamente.',

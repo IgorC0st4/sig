@@ -16,10 +16,11 @@ function RegistrarCarroDialog({
 
   const registrarCarro = async (valores) => {
     try {
-      await gerenciadorDeRequisicoes.post('/carros', Object.assign(valores, { idDono: idUsuario }));
+      await gerenciadorDeRequisicoes.post('/carros', Object.assign(valores, { iddono: idUsuario }));
       atualizarLista();
       esconderDialog();
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao salvar o carro. Verifique os dados inseridos e a sua conexão com a internet para tentar novamente.',

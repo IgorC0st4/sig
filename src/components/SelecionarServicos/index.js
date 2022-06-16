@@ -23,6 +23,7 @@ function SelecionarServicos({ tamanho, selecionarServicos }) {
       setServicos(data);
       setCarregando(false);
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao buscar os serviços. Verifique os dados a sua conexão com a internet para tentar novamente.',
@@ -66,7 +67,7 @@ function SelecionarServicos({ tamanho, selecionarServicos }) {
       <Title>Selecione os serviços desejados</Title>
       <FlatList
         style={{ height: '90%' }}
-        keyExtractor={(item) => item.idVariacao}
+        keyExtractor={(item) => item.idvariacao}
         data={servicos}
         renderItem={({ item, index }) => (
           <Controller
@@ -78,7 +79,7 @@ function SelecionarServicos({ tamanho, selecionarServicos }) {
               }}
               >
                 <Text style={{ flex: 1, fontSize: 16 }}>
-                  {item.nomeServico}
+                  {item.nomeservico}
                   {' '}
                   - R$
                   {item.valor}

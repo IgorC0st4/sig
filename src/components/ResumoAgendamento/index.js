@@ -1,16 +1,19 @@
 import React from 'react';
 import { View, FlatList, Alert } from 'react-native';
 import {
+  ActivityIndicator,
   Button,
-  Card, DarkTheme, Divider, List, Text, Title,
+  Card, DarkTheme, Divider, List, Snackbar, Text, Title,
 } from 'react-native-paper';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
 function ResumoAgendamento({
   dataSelecionada, carroSelecionado, servicosSelecionados, navigation,
 }) {
+  const [mostrarSnack, setMostrarSnack] = React.useState(false);
+  const [registrandoAgendamento, setRegistrandoAgendamento] = React.useState(false);
   const [orcamento, setOrcamento] = React.useState(0);
-  const [horasServico, setHorasServico] = React.useState(0);
+  const [horasservico, setHorasservico] = React.useState(0);
 
   const calcularOrcamento = () => {
     let total = 0;
@@ -22,10 +25,10 @@ function ResumoAgendamento({
 
   const calcularHorasServico = () => {
     let total = 0;
-    servicosSelecionados.forEach(({ duracaoServico }) => {
-      total += duracaoServico;
+    servicosSelecionados.forEach(({ duracaoservico }) => {
+      total += duracaoservico;
     });
-    setHorasServico(total);
+    setHorasservico(total);
   };
 
   React.useEffect(() => {
@@ -35,16 +38,19 @@ function ResumoAgendamento({
 
   const registrarAgendamento = async () => {
     try {
+      setRegistrandoAgendamento(true);
       const postData = {
         dataSelecionada,
         carroSelecionado,
         servicosSelecionados,
         orcamento,
-        horasServico,
+        horasservico,
       };
       await gerenciadorDeRequisicoes.post('agendamentos', postData);
-      navigation.goBack();
+      setMostrarSnack(true);
+      setRegistrandoAgendamento(false);
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao registrar o agendamento. Verifique os dados inseridos e a sua conexão com a internet para tentar novamente.',
@@ -56,6 +62,10 @@ function ResumoAgendamento({
         ],
       );
     }
+  };
+
+  const onDismissSnackBar = () => {
+    navigation.goBack();
   };
 
   return (
@@ -79,28 +89,45 @@ function ResumoAgendamento({
           <View style={{ marginBottom: 15 }}>
             <Title>Serviços</Title>
             <FlatList
-              keyExtractor={(item) => item.idVariacao.toString()}
+              keyExtractor={(item) => item.idvariacao.toString()}
               data={servicosSelecionados}
               renderItem={({ item }) => (
                 <List.Item
-                  title={`${item.nomeServico} - R$${item.valor}`}
+                  title={`${item.nomeservico} - R$${item.valor}`}
                 />
               )}
             />
             <List.Item title={`Total: R$${orcamento}`} />
-            <List.Item title={`Expectativa de horas: ${horasServico}`} />
+            <List.Item title={`Expectativa de horas: ${horasservico}`} />
             <Divider />
-            <Button
-              style={{ width: '100%' }}
-              mode="contained"
-              color={DarkTheme.colors.accent}
-              onPress={() => registrarAgendamento()}
-            >
-              Concluir
-            </Button>
+            {
+              registrandoAgendamento
+                ? (
+                  <ActivityIndicator />
+                )
+                : (
+
+                  <Button
+                    style={{ width: '100%' }}
+                    mode="contained"
+                    color={DarkTheme.colors.accent}
+                    onPress={() => registrarAgendamento()}
+                    disabled={mostrarSnack}
+                  >
+                    Concluir
+                  </Button>
+                )
+            }
           </View>
         </Card.Content>
       </Card>
+      <Snackbar
+        duration={3000}
+        visible={mostrarSnack}
+        onDismiss={onDismissSnackBar}
+      >
+        Seu agendamento foi marcado com sucesso!
+      </Snackbar>
     </View>
   );
 }

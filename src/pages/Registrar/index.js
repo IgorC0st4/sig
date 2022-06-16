@@ -35,6 +35,7 @@ function Registrar({ navigation }) {
         StackActions.replace('Tabs'),
       );
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao efetuar o registro. Verifique os dados inseridos e a sua conexão com a internet.',

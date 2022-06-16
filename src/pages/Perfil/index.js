@@ -31,6 +31,7 @@ function Perfil({ navigation }) {
       usuario.current = data[0];
       popularDados();
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao buscar os seus dados. Verifique a conexão com a internet.',
@@ -71,6 +72,7 @@ function Perfil({ navigation }) {
         await gerenciadorDeRequisicoes.put('/usuarios', dadosParaAtualizar);
         usuario.current = Object.assign(usuario.current, dadosParaAtualizar);
       } catch (error) {
+        console.error(error);
         Alert.alert(
           'ERRO',
           'Ocorreu um erro ao atualizar os seus dados. Verifique os dados inseridos e a sua conexão com a internet.',
@@ -91,6 +93,7 @@ function Perfil({ navigation }) {
         StackActions.replace('Login'),
       );
     } catch (error) {
+      console.error(error);
       Alert.alert(
         'ERRO',
         'Ocorreu um erro ao limpar os seus dados. Feche o aplicativo ou tente limpar o cache.',
