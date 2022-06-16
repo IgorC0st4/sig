@@ -18,7 +18,7 @@ import RegistrarCarroDialog from '../../components/RegistrarCarroDialog';
 import gerenciadorDeRequisicoes from '../../utils/gerenciadorDeRequisicoes';
 
 function Carros({ navigation }) {
-  const [iddono, setIddono] = React.useState(0);
+  const iddono = React.useRef(0);
   const [carregando, setCarregando] = React.useState(true);
   const [dialogVisivel, setDialogVisivel] = React.useState(false);
   const [carros, setCarros] = React.useState([]);
@@ -26,7 +26,7 @@ function Carros({ navigation }) {
   const buscarCarros = async () => {
     try {
       setCarregando(true);
-      const { data } = await gerenciadorDeRequisicoes.get(`/carros/?iddono=${iddono}`);
+      const { data } = await gerenciadorDeRequisicoes.get(`/carros/?iddono=${iddono.current}`);
       setCarros(data);
       setCarregando(false);
     } catch (error) {
@@ -46,8 +46,7 @@ function Carros({ navigation }) {
 
   const buscarIdDono = async () => {
     try {
-      const idSalvo = await AsyncStorage.getItem('idUsuario');
-      setIddono(idSalvo);
+      iddono.current = await AsyncStorage.getItem('idUsuario');
     } catch (error) {
       console.error(error);
       Alert.alert(
@@ -135,7 +134,7 @@ function Carros({ navigation }) {
           esconderDialog={esconderDialog}
           visivel={dialogVisivel}
           atualizarLista={buscarCarros}
-          iddono={iddono}
+          iddono={iddono.current}
         />
       </Portal>
     </Page>
