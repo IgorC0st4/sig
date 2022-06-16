@@ -46,7 +46,7 @@ function ResumoAgendamento({
         orcamento,
         horasservico,
       };
-      await gerenciadorDeRequisicoes.post('agendamentos', postData);
+      await gerenciadorDeRequisicoes.post('/agendamentos', postData);
       setMostrarSnack(true);
       setRegistrandoAgendamento(false);
     } catch (error) {
@@ -92,14 +92,29 @@ function ResumoAgendamento({
               keyExtractor={(item) => item.idvariacao.toString()}
               data={servicosSelecionados}
               renderItem={({ item }) => (
-                <List.Item
-                  title={`${item.nomeservico} - R$${item.valor}`}
-                />
+                <Text>
+                  {item.nomeservico}
+                  {' '}
+                  - R$
+                  {item.valor}
+                </Text>
               )}
             />
-            <List.Item title={`Total: R$${orcamento}`} />
-            <List.Item title={`Expectativa de horas: ${horasservico}`} />
             <Divider />
+            <Title>
+              Total: R$
+              {orcamento}
+            </Title>
+            <Title>
+              Expectativa de horas:
+              {horasservico}
+            </Title>
+            <Divider />
+            <Title style={{ textAlign: 'justify', margin: 15 }}>
+              OBS: o &quot;Total&quot; e &quot;Expectativa de horas&quot; aqui apresentados são apenas estimativas.
+              Para o valor final e período de tempo dos serviços é necessário uma inspeção do veículo.
+            </Title>
+            <Divider style={{ marginBottom: 15 }} />
             {
               registrandoAgendamento
                 ? (
